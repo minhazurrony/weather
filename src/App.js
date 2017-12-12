@@ -4,7 +4,7 @@ import { Navbar, NavItem, Nav, Grid, Row, Col } from "react-bootstrap";
 
 const PLACES = [
   { name: "Palo Alto", zip: "94303" },
-  { name: "San Jose", zip: "94088" },
+  { name: "Sunny Vale", zip: "94088" },
   { name: "Santa Cruz", zip: "95062" },
   { name: "Honolulu", zip: "96803" }
 ];
@@ -18,9 +18,10 @@ class WeatherDisplay extends Component {
   }
   componentDidMount() {
     const zip = this.props.zip;
+    const Key = "&appid=f07971da618d763409d4d26811d28912";
+    //const URL = "https://api.weatherbit.io/v2.0/current?city=" + name + Key;
     const URL =
-      "https://api.apixu.com/v1/current.json?key=13771a2f2737470b976142108170912&q=" +
-      zip;
+      "http://api.openweathermap.org/data/2.5/weather?zip=" + zip + Key;
     fetch(URL)
       .then(res => res.json())
       .then(json => {
@@ -31,16 +32,19 @@ class WeatherDisplay extends Component {
     let weatherData = this.state.weatherData;
     if (!weatherData) return <div>Loading</div>;
     // return <div>{JSON.stringify(weatherData)}</div>;
+    let weather = weatherData.weather[0];
+    let iconUrl = "http://openweathermap.org/img/w/" + weather.icon + ".png";
 
     return (
       <div>
         <h1>
-          {weatherData.current.condition.text} in {weatherData.location.name}
-          <img src={weatherData.current.condition.icon} alt="weather icon" />
+          {weather.main} in {weatherData.name}
+          <img src={iconUrl} alt={weatherData.description} />
         </h1>
-        <p>Temperature: {weatherData.current.temp_c}°</p>
-        <p>Humidity: {weatherData.current.humidity}</p>
-        <p>Wind Speed: {weatherData.current.wind_kph} Km/hr</p>
+        <p>Current: {weatherData.main.temp}°</p>
+        <p>High: {weatherData.main.temp_max}°</p>
+        <p>Low: {weatherData.main.temp_min}°</p>
+        <p>Wind Speed: {weatherData.wind.speed} mi/hr</p>
       </div>
     );
   }
