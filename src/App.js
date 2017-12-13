@@ -17,11 +17,10 @@ class WeatherDisplay extends Component {
     };
   }
   componentDidMount() {
-    const zip = this.props.zip;
-    const Key = "&appid=f07971da618d763409d4d26811d28912";
-    //const URL = "https://api.weatherbit.io/v2.0/current?city=" + name + Key;
-    const URL =
-      "http://api.openweathermap.org/data/2.5/weather?zip=" + zip + Key;
+    const name = this.props.name;
+    const Key = "&key=3a7bd1aa35574dd6867f9f5a05061c4a";
+    const URL = "https://api.weatherbit.io/v2.0/current?city=" + name + Key;
+    //const URL = "http://api.openweathermap.org/data/2.5/weather?zip=" + zip + Key;
     fetch(URL)
       .then(res => res.json())
       .then(json => {
@@ -32,19 +31,20 @@ class WeatherDisplay extends Component {
     let weatherData = this.state.weatherData;
     if (!weatherData) return <div>Loading</div>;
     // return <div>{JSON.stringify(weatherData)}</div>;
-    let weather = weatherData.weather[0];
-    let iconUrl = "http://openweathermap.org/img/w/" + weather.icon + ".png";
+    let weather_info = weatherData.data[0];
 
     return (
       <div>
         <h1>
-          {weather.main} in {weatherData.name}
-          <img src={iconUrl} alt={weatherData.description} />
+          {weather_info.weather.description} in {weather_info.city_name}
         </h1>
-        <p>Current: {weatherData.main.temp}°</p>
-        <p>High: {weatherData.main.temp_max}°</p>
-        <p>Low: {weatherData.main.temp_min}°</p>
-        <p>Wind Speed: {weatherData.wind.speed} mi/hr</p>
+        <p>Temperature: {weather_info.temp}</p>
+        <p> App Temperature: {weather_info.app_temp}</p>
+        <p>Clouds: {weather_info.clouds}</p>
+        <p>Wind Speed: {weather_info.wind_spd}</p>
+        <p>Wind Direction: {weather_info.wind_cdir_full}</p>
+        <p>Sun Rise: {weather_info.sunrise}</p>
+        <p>Sun Set: {weather_info.sunset}</p>
       </div>
     );
   }
@@ -87,7 +87,10 @@ class App extends Component {
               </Nav>
             </Col>
             <Col md={8} sm={8}>
-              <WeatherDisplay key={activePlace} zip={PLACES[activePlace].zip} />
+              <WeatherDisplay
+                key={activePlace}
+                name={PLACES[activePlace].name}
+              />
             </Col>
           </Row>
         </Grid>
