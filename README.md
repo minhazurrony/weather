@@ -1,6 +1,8 @@
 This Project build for inspiration at time of learning some basics of ReactJS.
 
+![weather-app](https://user-images.githubusercontent.com/32912877/33916338-7230be26-dfd2-11e7-9f35-3bb6647a014b.JPG)
 
+Check live Demo here: https://simple-weather-app.netlify.com/
 
 
 Achievements from this project:
